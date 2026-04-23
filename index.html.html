@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>استبيان كفايات المعلمين | 53 سؤال</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', 'Tahoma', 'Cairo', system-ui, sans-serif;
+            padding: 20px;
+            color: #1e293b;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        h1 { color: #4a5568; font-size: 1.8rem; }
+        .info-section {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .info-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 20px;
+            border-right: 4px solid #667eea;
+            padding-right: 12px;
+        }
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 18px;
+        }
+        .form-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #4a5568;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-family: inherit;
+        }
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .form-group .example {
+            font-size: 0.7rem;
+            color: #718096;
+            margin-top: 4px;
+        }
+        .full-width {
+            flex: 100%;
+        }
+        .questions-grid {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-height: 600px;
+            overflow-y: auto;
+            direction: rtl;
+        }
+        .questions-grid::-webkit-scrollbar {
+            width: 8px;
+        }
+        .questions-grid::-webkit-scrollbar-track {
+            background: #e2e8f0;
+            border-radius: 10px;
+        }
+        .questions-grid::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 10px;
+        }
+        .question-card {
+            border-bottom: 1px solid #e2e8f0;
+            padding: 15px 0;
+        }
+        .q-text {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #2d3748;
+        }
+        .options-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .option-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 12px;
+            background: #f7fafc;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+        .option-label input { margin: 0; }
+        .submit-area {
+            margin-top: 25px;
+            text-align: center;
+        }
+        button {
+            background: #48bb78;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover { background: #38a169; }
+        .status {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 10px;
+            display: none;
+        }
+        .status.success {
+            background: #c6f6d5;
+            color: #22543d;
+            display: block;
+        }
+        .status.error {
+            background: #fed7d7;
+            color: #742a2a;
+            display: block;
+        }
+        .progress { margin-top: 15px; font-size: 0.9rem; color: #4a5568; }
+        .small-note { color: #718096; font-size: 0.8rem; margin-top: 10px; }
+        @media (max-width: 768px) {
+            .options-row { gap: 6px; }
+            .option-label { font-size: 0.7rem; padding: 4px 8px; }
+            .form-group { min-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>📊 استبيان كفايات المعلمين</h1>
+        <p>53 سؤال - سيتم إرسال إجاباتك تلقائياً إلى الباحث</p>
+    </div>
+
+    <!-- SECTION 1: TEACHER INFORMATION -->
+    <div class="info-section">
+        <div class="info-title">📋 معلومات الأستاذ(ة)</div>
+        
+        <!-- Row 1: Gender -->
+        <div class="form-row">
+            <div class="form-group">
+                <label>⚥ الجنس *</label>
+                <select id="gender">
+                    <option value="">-- اختر --</option>
+                    <option value="ذكر">ذكر</option>
+                    <option value="أنثى">أنثى</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <!-- Empty for spacing -->
+            </div>
+        </div>
+
+        <!-- Row 2: School, Municipality, State - ALL IN ONE FIELD -->
+        <div class="form-row">
+            <div class="form-group full-width">
+                <label>🏫 اسم المؤسسة - بلدية المؤسسة - ولاية المؤسسة *</label>
+                <input type="text" id="schoolLocation" placeholder="مثال: متوسطة ابن باديس - القبة - الجزائر">
+                <div class="example" style="color: #e53e3e;">✏️ يرجى الفصل بين المعلومات بعلامة (-)</div>
+            </div>
+        </div>
+
+        <!-- Row 3: Graduation -->
+        <div class="form-row">
+            <div class="form-group">
+                <label>🎓 خريج *</label>
+                <select id="graduation">
+                    <option value="">-- اختر --</option>
+                    <option value="مدرسة عليا للأساتذة">مدرسة عليا للأساتذة (ENS)</option>
+                    <option value="جامعة">جامعة</option>
+                    <option value="أخرى">أخرى</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <!-- Empty for spacing -->
+            </div>
+        </div>
+
+        <!-- Row 4: Years of Experience -->
+        <div class="form-row">
+            <div class="form-group">
+                <label>⏱️ عدد سنوات العمل في التعليم *</label>
+                <select id="yearsExperience">
+                    <option value="">-- اختر --</option>
+                    <option value="أقل من 5 سنوات">أقل من 5 سنوات</option>
+                    <option value="من 5 إلى 10 سنوات">من 5 إلى 10 سنوات</option>
+                    <option value="من 10 إلى 20 سنوات">من 10 إلى 20 سنوات</option>
+                    <option value="أكثر من 20 سنة">أكثر من 20 سنة</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <!-- Empty for spacing -->
+            </div>
+        </div>
+
+    </div>
+
+    <!-- SECTION 2: QUESTIONS (53 QUESTIONS) -->
+    <div class="questions-grid" id="questionsContainer"></div>
+
+    <div class="submit-area">
+        <button id="submitBtn">🚀 إرسال الإجابات إلى الباحث</button>
+        <div id="status" class="status"></div>
+        <div id="progress" class="progress"></div>
+    </div>
+</div>
+
+<script>
+    // IMPORTANT: PASTE YOUR GOOGLE SCRIPT URL BELOW (between the quotes)
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz5ZSI5k462qp2sUqF6UWa3k3LXfhOq0srcqrXHdkkrf5wXCGqxSpiWVid7r6hCgrKo/exec";
+    
+    // 53 QUESTIONS (after all modifications)
+    const QUESTIONS_AR = [
+        "1. أتصرف بصفتي موظف للدولة في إطار أخلاقيات المهنة و التشريع المدرسي.",
+        "2. أحترم القيم الوطنية و العالمية و المبادئ الأخلاقية و الثوابت الوطنية.",
+        "3. أحترم القيم الجمهورية ونصوصها التأسيسية.",
+        "4. أتعرف على حقوقي و واجباتي وفق التشريع المدرسي.",
+        "5. أتحكم في مادة المعلوماتية وأسعى إلى إكتساب ثقافة عامة جيدة.",
+        "6. أتحكم جيدا بمحتوى مادة المعلوماتية.",
+        "7. أتحكم جيدا في منهاج مادة المعلوماتية و معايير تحقيقه.",
+        "8. أطلع على السندات التربوية (المنهاج - المخططات السنوية - الوثيقة المرافقة . دليل الأستاذ - كتاب التلميذ).",
+        "9. أتعرف على المفاهيم المهيكلة لمادة المعلوماتية.",
+        "10. أتحكم جيدا في تعليمة مادة المعلوماتية.",
+        "11. أصمم وأنظم وضعيات التعلم على نحو جيد.",
+        "12. أتحكم في بناء وضعية مشكلة إنطلاقية.",
+        "13. أتحكم في بناء وضعية تعلم الموارد (مشكلة بسيطة أو جزئية).",
+        "14. أتحكم في بناء وضعية تعلم إدماج.",
+        "15. أتحكم في بناء وضعية تقويمية.",
+        "16. أقوم مدى تقدم التعلمات ودرجة إكتساب الكفاءات.",
+        "17. أتحكم في مختلف التقويمات (التشخيصي، التكويني، الإشهادي، التجميعي).",
+        "18. أقوم تدرج تعلمات تلاميذي بطريقة بنائية وتقويمية.",
+        "19. أتحكم في بناء إختبار تحصيلي وفق دليل بناء الاختبارات.",
+        "20. أمكن تلاميذي بالنظرة الإيجابية لذواتهم وغيرهم.",
+        "21. أسهر على أن يكون تلميذي واع بتقدماته ومجهوداته.",
+        "22. أتحكم في تقنيات التقويم وفق مختلف التقويمات.",
+        "23. أتواصل بشكل واضح ومناسب في مختلف السياقات المتعلقة بمهنة التدريس.",
+        "24. أحترم قواعد لغة التدريس نطقا و كتابة.",
+        "25. أستخدم اللغة المناسبة خلال التدخلات بين التلاميذ وأوليائهم.",
+        "26. أتواصل مع تلاميذي ومختلف شركاء المؤسسة التعليمية.",
+        "27. أتحكم في أسس علم النفس التربوي وعلم نفس المراهق.",
+        "28. أتحكم في شروط التعلم وقوانينه ونظرياته.",
+        "29. أساعد تلاميذي على ممارسة عملياتهم المعرفية (الإحساس - الإنتباه - الإدراك - التذكر - الإبداع - الذكاء).",
+        "30. أشجع تلاميذي على التعلم وأنمي دافعيتهم.",
+        "31. أجري حصص الدعم.",
+        "32. أتفاعل مع تلاميذي في القسم على نحو جيد.",
+        "33. أبني علاقة بيداغوجية متينة مع تلاميذي في إطار العقد الديداكتيكي.",
+        "34. أتعرف على خصائص تلاميذي.",
+        "35. أتعرف على حاجات تلاميذي و دوافعهم.",
+        "36. أتعرف على مشكلات تلاميذي.",
+        "37. أتعرف على الفروق الفردية بين تلاميذي.",
+        "38. أخذ في الاعتبار إختلاف التلاميذ لتقديم المساعدة والمعالجة.",
+        "39. أتحكم في حصص المعالجة البيداغوجية.",
+        "40. أجري حصص الاستدراك.",
+        "41. أدمج وأتحكم في تكنولوجيات الإعلام والإتصال وأستعملها في نشاطات التدريس والتعلم مع تسيير التدريس وتحقيق التطور المهني.",
+        "42. أدمج تكنولوجية الإعلام والاتصال في عملية التدريس (منصات تعليمية - Zoom برمجيات... إلخ).",
+        "43. أتحكم في تكنولوجيات الإعلام والاتصال.",
+        "44. أسعى إلى تحقيق التطوير المهني من خلال تكنولوجيات الإعلام و الإتصال.",
+        "45. أعمل على إنجاز المهام التي تعزز التطوير المهني والعمل كفريق في إطار مشروع المؤسسة بالتعاون مع أولياء الأمور وشركاء المدرسة.",
+        "46. أساهم في اختيار مشروع المؤسسة.",
+        "47. أنسق مع شركاء المدرسة من أجل التشاور في حدود المسؤوليات المخولة لكل موظف.",
+        "48. أشجع مبادرة الأولياء للإسهام في الحياة المدرسية بإجراء لقاءات للتبادل.",
+        "49. أنخرط في خطة فردية أو جماعية قصد التطوير المهني.",
+        "50. أجري عملية جرد وحوصلة لمجمل كفاءاتي الذاتية.",
+        "51. أنجز خطة التطوير المهني عن طريق جرد المعارف والكفاءات المتحكم فيها.",
+        "52. أجري خطة التطوير المهني عن طريق إثارة النقاش مع زملائي.",
+        "53. أتشاور مع زملائي من أجل توسيع التفكير والتأمل في الممارسات المهنية اليومية."
+    ];
+
+    const OPTIONS = [
+        { value: 1, label: "1 - منخفضة جداً" },
+        { value: 2, label: "2 - منخفضة" },
+        { value: 3, label: "3 - متوسطة" },
+        { value: 4, label: "4 - كبيرة" },
+        { value: 5, label: "5 - كبيرة جداً" }
+    ];
+
+    let currentResponses = {};
+
+    function renderForm() {
+        const container = document.getElementById("questionsContainer");
+        let html = '';
+        for (let i = 0; i < QUESTIONS_AR.length; i++) {
+            html += `<div class="question-card">
+                        <div class="q-text">${QUESTIONS_AR[i]}</div>
+                        <div class="options-row" id="q-${i}">`;
+            for (let opt of OPTIONS) {
+                html += `<label class="option-label">
+                            <input type="radio" name="q${i}" value="${opt.value}" onchange="saveAnswer(${i}, ${opt.value})">
+                            <span>${opt.label}</span>
+                         </label>`;
+            }
+            html += `</div></div>`;
+        }
+        container.innerHTML = html;
+    }
+
+    window.saveAnswer = function(qIdx, value) {
+        currentResponses[qIdx] = value;
+        updateProgress();
+    };
+
+    function updateProgress() {
+        const answered = Object.keys(currentResponses).length;
+        document.getElementById("progress").innerHTML = `✅ تم الإجابة على ${answered} من أصل ${QUESTIONS_AR.length} سؤال`;
+    }
+
+    function splitSchoolLocation(locationString) {
+        let parts = locationString.split(/[-–—]\s*/);
+        
+        if (parts.length >= 3) {
+            return {
+                schoolName: parts[0].trim(),
+                municipality: parts[1].trim(),
+                state: parts[2].trim()
+            };
+        } else if (parts.length === 2) {
+            return {
+                schoolName: parts[0].trim(),
+                municipality: parts[1].trim(),
+                state: ""
+            };
+        } else {
+            return {
+                schoolName: locationString.trim(),
+                municipality: "",
+                state: ""
+            };
+        }
+    }
+
+    function validateTeacherInfo() {
+        const gender = document.getElementById("gender").value;
+        const schoolLocationRaw = document.getElementById("schoolLocation").value.trim();
+        const graduation = document.getElementById("graduation").value;
+        const yearsExperience = document.getElementById("yearsExperience").value;
+
+        if (!gender) { alert("الرجاء اختيار الجنس"); return false; }
+        if (!schoolLocationRaw) { alert("الرجاء إدخال اسم المؤسسة - بلدية المؤسسة - ولاية المؤسسة"); return false; }
+        if (!graduation) { alert("الرجاء اختيار خريج مدرسة عليا للأساتذة أو جامعة"); return false; }
+        if (!yearsExperience) { alert("الرجاء اختيار عدد سنوات العمل في التعليم"); return false; }
+
+        const splitLocation = splitSchoolLocation(schoolLocationRaw);
+        
+        return {
+            gender,
+            schoolName: splitLocation.schoolName,
+            municipality: splitLocation.municipality,
+            state: splitLocation.state,
+            graduation,
+            yearsExperience
+        };
+    }
+
+    async function submitToGoogle() {
+        const answeredCount = Object.keys(currentResponses).length;
+        if (answeredCount < QUESTIONS_AR.length) {
+            const statusDiv = document.getElementById("status");
+            statusDiv.className = "status error";
+            statusDiv.innerHTML = `⚠️ لم تكمل الأسئلة! لقد أجبت على ${answeredCount} من أصل ${QUESTIONS_AR.length} سؤال. الرجاء إكمال جميع الأسئلة قبل الإرسال.`;
+            setTimeout(() => { statusDiv.className = "status"; }, 4000);
+            return;
+        }
+
+        const teacherInfo = validateTeacherInfo();
+        if (!teacherInfo) return;
+
+        const data = {
+            gender: teacherInfo.gender,
+            schoolName: teacherInfo.schoolName,
+            municipality: teacherInfo.municipality,
+            state: teacherInfo.state,
+            graduation: teacherInfo.graduation,
+            yearsExperience: teacherInfo.yearsExperience
+        };
+        
+        for (let i = 0; i < QUESTIONS_AR.length; i++) {
+            data[`q${i+1}`] = currentResponses[i];
+        }
+
+        const statusDiv = document.getElementById("status");
+        statusDiv.className = "status";
+        statusDiv.innerHTML = "📤 جاري إرسال الإجابات إلى الباحث...";
+        statusDiv.style.display = "block";
+
+        try {
+            await fetch(GOOGLE_SCRIPT_URL, {
+                method: "POST",
+                mode: "no-cors",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            });
+            
+            statusDiv.className = "status success";
+            statusDiv.innerHTML = "✅ تم إرسال إجاباتك بنجاح! شكراً لك على تعاونك.";
+            
+            setTimeout(() => {
+                if(confirm("تم الإرسال بنجاح! هل تريد مسح الإجابات من هذه الصفحة لاستقبال مستخدم جديد؟")) {
+                    location.reload();
+                }
+            }, 2000);
+        } catch (error) {
+            statusDiv.className = "status error";
+            statusDiv.innerHTML = "❌ حدث خطأ في الإرسال. يرجى التحقق من اتصال الإنترنت والمحاولة مرة أخرى.";
+        }
+    }
+
+    renderForm();
+    updateProgress();
+    document.getElementById("submitBtn").addEventListener("click", submitToGoogle);
+</script>
+</body>
+</html>
